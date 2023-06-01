@@ -1,0 +1,11 @@
+#config/common.yaml
+
+---
+service_Safety:
+    nodeName : "safetyserver_node" #Unused
+    serviceName : "safety_0" #Automatically generate <serviceName>_Reg and <serviceName>_Req service name
+
+node_prop:
+    nodeName : "safetyserver_node" #primary
+    namespace : "V0"
+    
