@@ -5,8 +5,8 @@
 #include "vehicle_interfaces/msg/wheel_state.hpp"
 
 #define TOPIC_NAME "topic"
-#define TIME_SERVICE_NAME "timeService"
-#define SAFETY_SERVICE_NAME "/V0_Z0/safety_0"
+#define TIME_SERVICE_NAME "timesync_0"
+#define SAFETY_SERVICE_NAME "safety_0"
 
 using namespace std::chrono_literals;
 
@@ -48,7 +48,7 @@ private:
 
 public:
     SamplePublisher(std::string nodeName, std::string topicName, std::string timeServiceName, std::string safetyServiceName) : 
-        TimeSyncNode(nodeName, timeServiceName), 
+        TimeSyncNode(nodeName, timeServiceName, 10000, 2), 
         SafetyNode(nodeName, safetyServiceName), 
         Node(nodeName)
     {

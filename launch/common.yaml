@@ -5,7 +5,9 @@ service_Safety:
     nodeName : "safetyserver_node" #Unused
     serviceName : "safety_0" #Automatically generate <serviceName>_Reg and <serviceName>_Req service name
 
-node_prop:
-    nodeName : "safetyserver_node" #primary
+generic_prop:
+    nodeName : "safetyserver_0_node" #primary
     namespace : "V0"
-    
+    qosService : "qos_0"
+    safetyService : "safety_0"
+    timesyncService : "timesync_0"

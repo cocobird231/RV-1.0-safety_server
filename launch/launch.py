@@ -13,7 +13,7 @@ def generate_launch_description():
     return LaunchDescription([
         Node(
             package="cpp_safetyserver",
-            namespace=data['node_prop']['namespace'],
+            namespace=data['generic_prop']['namespace'],
             executable="server",
             output="screen",
             emulate_tty=True,
@@ -21,8 +21,10 @@ def generate_launch_description():
                 {
                     "service_Safety_nodeName" : data['service_Safety']['nodeName'], 
                     "service_Safety_serviceName" : data['service_Safety']['serviceName'], 
-                    "mainNodeName" : data['node_prop']['nodeName'], 
-                    "mainNamespace" : data['node_prop']['namespace'], 
+                    "nodeName" : data['generic_prop']['nodeName'], 
+                    "qosService" : data['generic_prop']['qosService'], 
+                    "safetyService" : data['generic_prop']['safetyService'], 
+                    "timesyncService" : data['generic_prop']['timesyncService'], 
                 }
             ]
         )
