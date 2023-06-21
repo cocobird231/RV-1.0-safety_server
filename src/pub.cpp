@@ -1,12 +1,12 @@
 #include <random>
 
-#include "vehicle_interfaces/timesync.h"
+#include "vehicle_interfaces/params.h"
 #include "vehicle_interfaces/safety.h"
+#include "vehicle_interfaces/timesync.h"
 #include "vehicle_interfaces/msg/wheel_state.hpp"
 
+#define NODE_NAME "safetytest_0_node"
 #define TOPIC_NAME "topic"
-#define TIME_SERVICE_NAME "timesync_0"
-#define SAFETY_SERVICE_NAME "safety_0"
 
 using namespace std::chrono_literals;
 
@@ -63,7 +63,8 @@ public:
 int main(int argc, char * argv[])
 {
     rclcpp::init(argc, argv);
-    auto timeSyncPub = std::make_shared<SamplePublisher>("sample_publisher", TOPIC_NAME, TIME_SERVICE_NAME, SAFETY_SERVICE_NAME);
+    auto params = std::make_shared<vehicle_interfaces::GenericParams>("safetytest_params_node");
+    auto timeSyncPub = std::make_shared<SamplePublisher>(NODE_NAME, TOPIC_NAME, params->timesyncService, params->safetyService);
     rclcpp::spin(timeSyncPub);
     std::cerr << "Spin Exit" << std::endl;
     rclcpp::shutdown();
