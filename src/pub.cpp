@@ -47,13 +47,13 @@ private:
     }
 
 public:
-    SamplePublisher(std::string nodeName, std::string topicName, std::string timeServiceName, std::string safetyServiceName) : 
-        TimeSyncNode(nodeName, timeServiceName, 10000, 2), 
-        SafetyNode(nodeName, safetyServiceName), 
-        Node(nodeName)
+    SamplePublisher(const std::shared_ptr<vehicle_interfaces::GenericParams>& gParams) : 
+        TimeSyncNode(NODE_NAME, gParams->timesyncService, gParams->timesyncInterval_ms, gParams->timesyncAccuracy_ms), 
+        SafetyNode(NODE_NAME, gParams->safetyService), 
+        rclcpp::Node(NODE_NAME)
     {
-        this->nodeName_ = nodeName;
-        this->publisher_ = this->create_publisher<vehicle_interfaces::msg::WheelState>(topicName, 10);
+        this->nodeName_ = NODE_NAME;
+        this->publisher_ = this->create_publisher<vehicle_interfaces::msg::WheelState>(TOPIC_NAME, 10);
         this->timer_ = this->create_wall_timer(20ms, std::bind(&SamplePublisher::timer_callback, this));
         this->cnt_ = 0;
         this->emP_ = 0.0;
@@ -64,7 +64,7 @@ int main(int argc, char * argv[])
 {
     rclcpp::init(argc, argv);
     auto params = std::make_shared<vehicle_interfaces::GenericParams>("safetytest_params_node");
-    auto timeSyncPub = std::make_shared<SamplePublisher>(NODE_NAME, TOPIC_NAME, params->timesyncService, params->safetyService);
+    auto timeSyncPub = std::make_shared<SamplePublisher>(params);
     rclcpp::spin(timeSyncPub);
     std::cerr << "Spin Exit" << std::endl;
     rclcpp::shutdown();
