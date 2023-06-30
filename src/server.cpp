@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
     rclcpp::init(argc, argv);
     auto params = std::make_shared<vehicle_interfaces::GenericParams>("safetyserver_params_node");
-    auto server = std::make_shared<SafetyServer>(params->nodeName, params->safetyService);
+    auto server = std::make_shared<vehicle_interfaces::SafetyServer>(params->nodeName, params->safetyService);
     rclcpp::spin(server);
     std::cerr << "Spin Exit" << std::endl;
     rclcpp::shutdown();

@@ -10,7 +10,7 @@
 
 using namespace std::chrono_literals;
 
-class SamplePublisher : public TimeSyncNode, public SafetyNode
+class SamplePublisher : public vehicle_interfaces::TimeSyncNode, public vehicle_interfaces::SafetyNode
 {
 private:
     rclcpp::Publisher<vehicle_interfaces::msg::WheelState>::SharedPtr publisher_;
@@ -27,7 +27,9 @@ private:
     {
         auto msg = vehicle_interfaces::msg::WheelState();
         msg.header.device_id = this->nodeName_;
+        msg.header.stamp_type = this->getTimestampType();
         msg.header.stamp = this->getTimestamp();
+        msg.header.stamp_offset = this->getCorrectDuration().nanoseconds();
 
         msg.gear = vehicle_interfaces::msg::WheelState::GEAR_NEUTRAL;
         msg.steering = cnt_ % 512;
@@ -48,8 +50,8 @@ private:
 
 public:
     SamplePublisher(const std::shared_ptr<vehicle_interfaces::GenericParams>& gParams) : 
-        TimeSyncNode(NODE_NAME, gParams->timesyncService, gParams->timesyncInterval_ms, gParams->timesyncAccuracy_ms), 
-        SafetyNode(NODE_NAME, gParams->safetyService), 
+        vehicle_interfaces::TimeSyncNode(NODE_NAME, gParams->timesyncService, gParams->timesyncInterval_ms, gParams->timesyncAccuracy_ms), 
+        vehicle_interfaces::SafetyNode(NODE_NAME, gParams->safetyService), 
         rclcpp::Node(NODE_NAME)
     {
         this->nodeName_ = NODE_NAME;
