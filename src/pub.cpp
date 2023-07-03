@@ -1,8 +1,6 @@
 #include <random>
 
-#include "vehicle_interfaces/params.h"
-#include "vehicle_interfaces/safety.h"
-#include "vehicle_interfaces/timesync.h"
+#include "vehicle_interfaces/vehicle_interfaces.h"
 #include "vehicle_interfaces/msg/wheel_state.hpp"
 
 #define NODE_NAME "safetytest_0_node"
