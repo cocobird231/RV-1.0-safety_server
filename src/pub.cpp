@@ -8,7 +8,7 @@
 
 using namespace std::chrono_literals;
 
-class SamplePublisher : public vehicle_interfaces::TimeSyncNode, public vehicle_interfaces::SafetyNode
+class SamplePublisher : public vehicle_interfaces::VehicleServiceNode
 {
 private:
     rclcpp::Publisher<vehicle_interfaces::msg::WheelState>::SharedPtr publisher_;
@@ -48,11 +48,10 @@ private:
 
 public:
     SamplePublisher(const std::shared_ptr<vehicle_interfaces::GenericParams>& gParams) : 
-        vehicle_interfaces::TimeSyncNode(NODE_NAME, gParams->timesyncService, gParams->timesyncPeriod_ms, gParams->timesyncAccuracy_ms), 
-        vehicle_interfaces::SafetyNode(NODE_NAME, gParams->safetyService), 
-        rclcpp::Node(NODE_NAME)
+        vehicle_interfaces::VehicleServiceNode(gParams), 
+        rclcpp::Node(gParams->nodeName)
     {
-        this->nodeName_ = NODE_NAME;
+        this->nodeName_ = gParams->nodeName;
         this->publisher_ = this->create_publisher<vehicle_interfaces::msg::WheelState>(TOPIC_NAME, 10);
         this->timer_ = this->create_wall_timer(20ms, std::bind(&SamplePublisher::timer_callback, this));
         this->cnt_ = 0;
@@ -64,6 +63,9 @@ int main(int argc, char * argv[])
 {
     rclcpp::init(argc, argv);
     auto params = std::make_shared<vehicle_interfaces::GenericParams>("safetytest_params_node");
+    params->nodeName = NODE_NAME;
+    params->devInfoService = "";
+    params->qosService = "";
     auto timeSyncPub = std::make_shared<SamplePublisher>(params);
     rclcpp::spin(timeSyncPub);
     std::cerr << "Spin Exit" << std::endl;
