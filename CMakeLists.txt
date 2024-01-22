@@ -37,13 +37,13 @@ find_package(vehicle_interfaces REQUIRED)
 add_executable(server src/server.cpp)
 ament_target_dependencies(server rclcpp vehicle_interfaces)
 
-add_executable(pub src/pub.cpp)
-ament_target_dependencies(pub rclcpp vehicle_interfaces)
+add_executable(t "src/test.cpp")
+ament_target_dependencies(t rclcpp vehicle_interfaces)
 
 ## Install
 install(TARGETS
   server
-  pub
+  t
   DESTINATION lib/${PROJECT_NAME}
 )
 
