@@ -27,9 +27,11 @@ private:
     void _timer1Callback()
     {
         std::array<float, 8> emPs;
-        this->getEmergency("nearest", emPs);
-        printf("[SafetyTestNode::_timer1Callback] %1.2f %1.2f %1.2f %1.2f %1.2f %1.2f %1.2f %1.2f\n", 
-                emPs[0], emPs[1], emPs[2], emPs[3], emPs[4], emPs[5], emPs[6], emPs[7]);
+        if (this->getEmergency("nearest", emPs))
+            printf("[SafetyTestNode::_timer1Callback] %1.2f %1.2f %1.2f %1.2f %1.2f %1.2f %1.2f %1.2f\n", 
+                    emPs[0], emPs[1], emPs[2], emPs[3], emPs[4], emPs[5], emPs[6], emPs[7]);
+        else
+            printf("[SafetyTestNode::_timer1Callback] getEmergency error.\n");
     }
 
 public:
@@ -38,7 +40,7 @@ public:
         rclcpp::Node(gParams->nodeName)
     {
         this->nodeName_ = gParams->nodeName;
-        this->timer0_ = this->create_wall_timer(50ms, std::bind(&SafetyTestNode::_timer0Callback, this));
+        this->timer0_ = this->create_wall_timer(20ms, std::bind(&SafetyTestNode::_timer0Callback, this));
         this->timer1_ = this->create_wall_timer(100ms, std::bind(&SafetyTestNode::_timer1Callback, this));
     }
 };
